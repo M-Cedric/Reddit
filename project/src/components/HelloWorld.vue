@@ -1,5 +1,13 @@
 <template>
   <div class="hello">
+<!--    <div v-for="proj in reddit">-->
+<!--      <hi>{{ proj.title.rendered}}</hi>-->
+<!--    </div>-->
+
+    <div v-for="(title, proj) in reddit" :key="proj.id">
+      {{proj}}. {{title.rendered}}
+    </div>
+
 
   </div>
 </template>
@@ -8,9 +16,22 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: String,
+    reddit: []
+  },
+  created: function () {
+    this.$http.get('wp/v2/reddit').then(response => {
+      for (let reddit in response.data){
+        this.reddit.push(response.data[reddit]);
+      }
+    }, error => {
+      alert(error);
+    });
   }
 }
+
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
