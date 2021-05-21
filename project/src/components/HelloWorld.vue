@@ -1,33 +1,47 @@
 <template>
   <div class="hello">
-<!--    <div v-for="proj in reddit">-->
-<!--      <hi>{{ proj.title.rendered}}</hi>-->
-<!--    </div>-->
 
-    <div v-for="(title, proj) in reddit" :key="proj.id">
-      {{proj}}. {{title.rendered}}
+    <div class="button">
+      <md-button v-for="item in post" :key="item.data.id" onclick="created">Default</md-button>
     </div>
-
 
   </div>
 </template>
 
 <script>
+const axios = require("axios");
+
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String,
     reddit: []
   },
-  created: function () {
-    this.$http.get('wp/v2/reddit').then(response => {
-      for (let reddit in response.data){
-        this.reddit.push(response.data[reddit]);
-      }
-    }, error => {
-      alert(error);
-    });
-  }
+  data() {
+    return {
+      post: []
+    }
+  },
+  created() {
+    // this.initMenu();
+    axios.get("http://localhost:8888/wordpress/wp-json/wp/v2/posts/")
+        .then(response => {
+        console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+  },
+  // created: function () {
+  //   this.$http.get('wp/v2/reddit').then(response => {
+  //     for (let reddit in response.data){
+  //       this.reddit.push(response.data[reddit]);
+  //     }
+  //   }, error => {
+  //     alert(error);
+  //   });
+  // }
 }
 
 
@@ -46,6 +60,9 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
+}
+button {
+  background: black;
 }
 /*a {*/
 /*  color: #42b983;*/
